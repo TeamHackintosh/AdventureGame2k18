@@ -5,19 +5,13 @@
  */
 public class Held extends Lebewesen
 {
-    // Bezugsobjekte
-
-    // Attribute
     private int richtung;
-
-    // Konstruktor
+    
     public Held()
     {   setPosY(0);
         setPosX(0);
 
     }
-
-    // Dienste
     public void gehe ()
     {
         
