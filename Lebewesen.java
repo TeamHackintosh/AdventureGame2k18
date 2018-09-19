@@ -15,8 +15,8 @@ public class Lebewesen
     private Gegenstand inHand;
     private int maxRüstung;
     private int aktRüstung;
-    private int positionX;
-    private int positionY;
+    private int posX;
+    private int posY;
     
     
     
@@ -24,6 +24,17 @@ public class Lebewesen
     public Lebewesen()
     {
         
+    }
+    
+    public Lebewesen(int pMaxLebenspunkte, int pAktLebenspunkte, int pErfPunkte, int pMaxRüstung, int pAktRüstung, int pPosX,int pPosY)
+    {
+        maxLebenspunkte=pMaxLebenspunkte;
+        aktLebenspunkte=pAktLebenspunkte;
+        erfPunkte=pErfPunkte;
+        maxRüstung=pMaxRüstung;
+        aktRüstung=pAktRüstung;
+        posX=pPosX;
+        posY=pPosY;
     }
 
     // Dienste
@@ -89,24 +100,21 @@ public class Lebewesen
     
     public int getPosX()
     {
-        return positionX;
+        return posX;
     }
     
     public void setPosX (int pPosX)
     {
-        positionX=pPosX;
+        posX=pPosX;
     }
     
        public int getPosY()
     {
-        return positionY;
+        return posY;
     }
     
     public void setPosY (int pPosY)
     {
-        positionY=pPosY;
+        posY=pPosY;
     }
-    
-    
-   
 }
