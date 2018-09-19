@@ -24,13 +24,17 @@ public class Game
     private Parser parser;
     private static int currentHours, currentMinutes, currentSeconds;
     private static int startHours, startMinutes, startSeconds;
-    private java.util.Date now;        
+    private java.util.Date now; 
+    private Held aktHeld;
+    private Welt aktWelt;
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
         //uc new Welt();
+        aktHeld = new Held(); 
+        aktWelt = new Welt();
         parser = new Parser();
         now = new java.util.Date();
         startHours = now.getHours();
@@ -39,8 +43,6 @@ public class Game
     } 
     public static void main(String[] args) {
      Game newGame = new Game();
-     Spieler aktSpieler = new Spieler(); 
-     Welt aktWelt = new Welt();
      newGame.play();         
     }
     
@@ -95,7 +97,7 @@ public class Game
         ausgabe+="\n";
         ausgabe+="Gib 'hilfe' ein, um eine Anleitung zu erhalten.";
         ausgabe+="\n";
-        ausgabe+="Du befindest dich bei: "+aktSpieler.getPosX+aktSpieler.getPosY;
+        ausgabe+="Du befindest dich bei: "+aktHeld.getPosX()+aktHeld.getPosY();
         gibAus(ausgabe);
     }
 
@@ -118,23 +120,40 @@ public class Game
             printHelp();
         }
         else if (commandWord.equals("gehe")) {
-            aktSpieler.gehe();
+            aktHeld.gehe(aktHeld.getRichtung());
         }
         else if (commandWord.equals("beende")) {
             wantToQuit = quit(command);
         }
         else if (commandWord.equals("setzeRichtungAuf")) {
-            aktSpieler.setRichtung();
+            int richtung=4;
+            switch (command.getSecondWord())
+            {
+                case "Osten": richtung= 0;
+                break;
+                case "Sueden": richtung= 1;
+                break;
+                case "Westen": richtung= 2;
+                break;
+                case "Norden": richtung= 3;
+                break;
+            }
+            if(richtung<4){
+                aktHeld.setRichtung(richtung);
+            }
+            else{
+                gibAus("Dies ist keine zulässige Richtungsangabe.");
+            }
         }
-        else if (commandWord.equals("nimm")) {
-            if(aktWelt[held.getPosX][held.getPosY]
+        /*else if (commandWord.equals("nimm")) {
+            if(aktWelt.neueWelt[aktHeld.getPosX()][aktHeld.getPosY()]
             ==command.getSecondWord()){
-                aktSpieler.nimm(command.getSecondWord);
+                aktHeld.nimm(command.getSecondWord());
             }    
             else{
                 gibAus("Dieser Gegenstand befindet sich nicht auf diesem Feld.");
             }
-        }
+        }*/
         //zweites Wort abfragen command.getSecondWord
         return wantToQuit;
     }
@@ -148,7 +167,7 @@ public class Game
      */
     private void printHelp() 
     {
-        String ausgabe;
+        String ausgabe="";
         ausgabe+="Du stehst alleine auf weiter Flur in einer dir noch unbekannten Welt. Du bist noch sehr müde und erschöpft ";
         ausgabe+="von der langen Reise.";
         ausgabe+="Mögliche Kommandos sind: ";
