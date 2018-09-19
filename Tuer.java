@@ -3,15 +3,15 @@
  * @Sam Horn & Moritz Wagner 
  * @1.0 
  */
-public class Wand
+public class Tuer
 {
     private int posX,posY;
     
-    public Wand()
+    public Tuer()
     {
 
     }
-
+    
     public int getPosX()
     {
         return posX;

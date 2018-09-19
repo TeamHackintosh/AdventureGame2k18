@@ -3,11 +3,11 @@
  * @Sam Horn & Moritz Wagner 
  * @1.0 
  */
-public class Wand
+public class Busch
 {
     private int posX,posY;
     
-    public Wand()
+    public Busch()
     {
 
     }
