@@ -15,8 +15,7 @@ public class Lebewesen
     private Gegenstand inHand;
     private int maxRüstung;
     private int aktRüstung;
-    private int posX;
-    private int posY;
+    public int posX,posY;
     
     
     
@@ -25,7 +24,6 @@ public class Lebewesen
     {
         
     }
-    
     public Lebewesen(int pMaxLebenspunkte, int pAktLebenspunkte, int pErfPunkte, int pMaxRüstung, int pAktRüstung, int pPosX,int pPosY)
     {
         maxLebenspunkte=pMaxLebenspunkte;
@@ -36,7 +34,7 @@ public class Lebewesen
         posX=pPosX;
         posY=pPosY;
     }
-
+    
     // Dienste
     public int getMaxLebenspunkte()
     {
@@ -117,4 +115,7 @@ public class Lebewesen
     {
         posY=pPosY;
     }
+    
+    
+   
 }
