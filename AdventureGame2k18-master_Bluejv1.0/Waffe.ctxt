@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=Waffe
+comment0.text=\r\n\ Team-Hackintosh\ \ \ \r\n\ V\ 0.1\r\n\ Diese\ Klasse\ ist\ die\ Oberklasse\ aller\ Waffen.\ Hier\ werden\ die\ gemeinsamen\ Attribute\ festgelegt.\ \r\n
+comment1.params=
+comment1.target=Waffe()
+comment2.params=
+comment2.target=int\ getPosX()
+comment3.params=
+comment3.target=int\ getPosY()
+comment4.params=pPosX
+comment4.target=void\ setPosX(int)
+comment5.params=pPosY
+comment5.target=void\ setPosY(int)
+numComments=6

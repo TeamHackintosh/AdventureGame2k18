@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Gegenstand
+comment0.text=\r\n\ Team-Hackintosh\ \r\n\ V\ 0.1\r\n\ Diese\ Klasse\ beinhaltet\ alle\ Gegenst\u00E4nde\ des\ Spieles.\ Egal\ ob\ Waffe\ oder\ Fackel.\r\n
+comment1.params=
+comment1.target=Gegenstand()
+comment2.params=pHaltbarkeit\ pSchaden\ pName
+comment2.target=Gegenstand(int,\ int,\ java.lang.String)
+comment3.params=pHaltbarkeit
+comment3.target=void\ setHaltbarkeit(int)
+comment4.params=pSchaden
+comment4.target=void\ setSchaden(int)
+comment5.params=pName
+comment5.target=void\ setName(java.lang.String)
+comment6.params=
+comment6.target=java.lang.String\ getName()
+numComments=7
