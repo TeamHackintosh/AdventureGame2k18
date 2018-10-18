@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=Welt
+comment0.text=\r\n\ @Sam\ Horn\ &\ Moritz\ Wagner\ \r\n\ @1.0\r\n
+comment1.params=
+comment1.target=Welt()
+comment2.params=xPos\ yPos
+comment2.target=Gegenstand\ getFeld(int,\ int)
+numComments=3

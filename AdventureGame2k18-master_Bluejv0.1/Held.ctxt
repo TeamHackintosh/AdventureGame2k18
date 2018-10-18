@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=Held
+comment0.text=\r\n\ @author\ \r\n\ @version\ \r\n
+comment1.params=
+comment1.target=Held()
+comment2.params=pRichtung
+comment2.target=void\ gehe(int)
+comment3.params=pRichtung
+comment3.target=void\ drehe(int)
+comment4.params=
+comment4.target=int\ getRichtung()
+comment5.params=pRichtung
+comment5.target=void\ setRichtung(int)
+numComments=6

@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=Busch
+comment0.text=\r\n\ @Sam\ Horn\ &\ Moritz\ Wagner\ \r\n\ @1.0\ \r\n
+comment1.params=
+comment1.target=Busch()
+comment2.params=
+comment2.target=int\ getPosX()
+comment3.params=
+comment3.target=int\ getPosY()
+comment4.params=pPosX
+comment4.target=void\ setPosX(int)
+comment5.params=pPosY
+comment5.target=void\ setPosY(int)
+numComments=6
