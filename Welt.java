@@ -6,7 +6,7 @@
 public class Welt
 {
     private int xPos, yPos;
-    Object[][] neueWelt = new Object[50][50];
+    Gegenstand[][] neueWelt = new Gegenstand[50][50];
     
     public Welt()
     {
@@ -42,12 +42,10 @@ public class Welt
         neueWelt[2][34] = new Baum();
         //
         neueWelt[3][6] = new Wand();
-        neueWelt[3][7] = new Tuer();
-        neueWelt[3][8] = new Tuer();
         neueWelt[3][9] = new Wand();
         neueWelt[3][12] = new Wand();
-        neueWelt[3][13] = new Tuer();
-        neueWelt[3][14] = new Tuer();
+        neueWelt[3][13] = new Waffe();
+        neueWelt[3][14] = new Waffe();
         neueWelt[3][15] = new Wand();
         
         neueWelt[3][20] = new Baum();
@@ -100,7 +98,7 @@ public class Welt
         //
         neueWelt[7][0] = new Wand();
         
-        neueWelt[7][3] = new Tuer();
+        neueWelt[7][3] = new Waffe();
         
         neueWelt[7][20] = new Baum();
         neueWelt[7][34] = new Baum();
@@ -111,7 +109,7 @@ public class Welt
         //
         neueWelt[8][0] = new Wand();
         
-        neueWelt[8][3] = new Tuer();
+        neueWelt[8][3] = new Waffe();
         
         neueWelt[8][20] = new Baum();
         neueWelt[8][31] = new Baum();
@@ -124,6 +122,7 @@ public class Welt
         neueWelt[9][2] = new Wand();
         neueWelt[9][3] = new Wand();
         
+        neueWelt[9][10] = new Waffe();
         neueWelt[9][20] = new Baum();
         neueWelt[9][31] = new Baum();
         neueWelt[9][34] = new Baum();
@@ -162,7 +161,7 @@ public class Welt
         //
         neueWelt[13][0] = new Wand();
         
-        neueWelt[13][3] = new Tuer();
+        neueWelt[13][3] = new Waffe();
         
         neueWelt[13][20] = new Baum();
         neueWelt[13][31] = new Baum();
@@ -179,7 +178,7 @@ public class Welt
         //
         neueWelt[14][0] = new Wand();
         
-        neueWelt[14][3] = new Tuer();
+        neueWelt[14][3] = new Waffe();
         
         neueWelt[14][20] = new Baum();
         neueWelt[14][24] = new Baum();
@@ -296,8 +295,8 @@ public class Welt
         neueWelt[23][45] = new Baum();
         //
         neueWelt[24][31] = new Wand();
-        neueWelt[24][32] = new Tuer();
-        neueWelt[24][33] = new Tuer();
+        neueWelt[24][32] = new Waffe();
+        neueWelt[24][33] = new Waffe();
         neueWelt[24][34] = new Wand();
         
         neueWelt[24][1] = new Baum();
@@ -612,5 +611,33 @@ public class Welt
         
         neueWelt[49][43] = new Busch();
         neueWelt[49][44] = new Busch();
+    }
+    
+    public Gegenstand getFeld(int xPos, int yPos)
+    {
+       return neueWelt[xPos][yPos];
+    }
+    public boolean feldIstBegehbar(int xPos, int yPos)
+    {
+        boolean wert=false;
+        try
+        {
+            if(getFeld(xPos, yPos).getName()!="wand"&&getFeld(xPos, yPos).getName()!="baum"&&getFeld(xPos, yPos).getName()!="busch"){
+                wert=true;
+            }
+        }
+        catch(NullPointerException e){
+            wert=true;
+        }
+        return wert;
+    }
+    public boolean feldIstLeer(int xPos, int yPos){
+        if(getFeld(xPos, yPos)==null)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

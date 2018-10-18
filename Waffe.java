@@ -4,23 +4,48 @@
  * V 0.1
  * Diese Klasse ist die Oberklasse aller Waffen. Hier werden die gemeinsamen Attribute festgelegt. 
  */
-public class Waffe
+public class Waffe extends Gegenstand
 {
     // Bezugsobjekte
-
-    // Attribute
-    private int minAbnutzung;
-    private int aktAbnutzung;
-    private int Schaden;
+    private int aktHaltbarkeit;
+    private int maxHaltbarkeit;
+    private int schaden;
     
-
+    // Attribute
     // Konstruktor
     public Waffe()
     {
-
+        super("waffe");
     }
-
-    public int get (minAbnutzung)
-    {}
-
+    public Waffe(int pAktHaltbarkeit, int pMaxHaltbarkeit, int pSchaden)
+    {
+        super("waffe");
+        aktHaltbarkeit = pAktHaltbarkeit;
+        maxHaltbarkeit = pMaxHaltbarkeit;
+        schaden = pSchaden;
+    }
+    public void setMaxHaltbarkeit(int pMaxHaltbarkeit)
+    {
+        maxHaltbarkeit=pMaxHaltbarkeit;
+    }  
+    public void setAktHaltbarkeit(int pAktHaltbarkeit)
+    {
+        aktHaltbarkeit=pAktHaltbarkeit;
+    }  
+    public void setSchaden(int pSchaden)
+    {
+        schaden=pSchaden;
+    }    
+    public int getMaxHaltbarkeit()
+    {
+        return maxHaltbarkeit;
+    }  
+    public int getAktHaltbarkeit()
+    {
+        return aktHaltbarkeit;
+    }  
+    public int getSchaden()
+    {
+        return schaden;
+    }   
 }

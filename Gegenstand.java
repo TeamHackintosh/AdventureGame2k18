@@ -1,4 +1,3 @@
-
 /**
  * Team-Hackintosh 
  * V 0.1
@@ -9,24 +8,45 @@ public class Gegenstand
     // Bezugsobjekte
 
     // Attribute
-    private int Haltbarkeit;
-    private int Schaden;
-    
+    private String name;
+    //private int posX,posY;
     // Konstruktor
     public Gegenstand()
     {
 
     }
+    
+     // Konstruktor
+    public Gegenstand(String pName)
+    {
+        name = pName;
+    }
 
     // Dienste
-    public void setHaltbarkeit(int pHaltbarkeit)
-    {
-        Haltbarkeit=pHaltbarkeit;
-    }  
     
-    public void setSchaden(int pSchaden)
+    public void setName(String pName)
     {
-        Schaden=pSchaden;
-    }    
-
+        name=pName;
+    } 
+    public String getName()
+    {
+        return name;
+    }
+    
+    /*public int getPosX()
+    {
+        return posX;
+    }
+    public int getPosY()
+    {
+        return posY;
+    }
+    public void setPosX(int pPosX)
+    {
+        posX=pPosX;
+    }
+    public void setPosY(int pPosY)
+    {
+        posY=pPosY;
+    }*/
 }

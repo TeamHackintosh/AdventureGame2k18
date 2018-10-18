@@ -9,14 +9,11 @@ public class Lebewesen
     // Bezugsobjekte
 
     // Attribute
-    private int maxLebenspunkte;
-    private int aktLebenspunkte;
-    private int erfPunkte;
+    private int maxAusdauer; 
+    private int aktAusdauer; // Ausdauer bezeichnet zugleich auch die Lebenspunkte, ist die Ausdauer = 0, stirbt das Lebewesen
+    private int staerke; // bezeichnet die Kampfstaerke, bei Monstern eine Konstante, der Held sammelt im Laufe des Spiels zusätzliche Erfahrung, wodurch sich seine Staerke steigert
     private Gegenstand inHand;
-    private int maxRüstung;
-    private int aktRüstung;
-    public int posX,posY;
-    
+    private int posX,posY;
     
     
     // Konstruktor
@@ -24,46 +21,44 @@ public class Lebewesen
     {
         
     }
-    public Lebewesen(int pMaxLebenspunkte, int pAktLebenspunkte, int pErfPunkte, int pMaxRüstung, int pAktRüstung, int pPosX,int pPosY)
+    public Lebewesen(int pMaxAusdauer, int pAktAusdauer, int pStaerke, int pPosX, int pPosY)
     {
-        maxLebenspunkte=pMaxLebenspunkte;
-        aktLebenspunkte=pAktLebenspunkte;
-        erfPunkte=pErfPunkte;
-        maxRüstung=pMaxRüstung;
-        aktRüstung=pAktRüstung;
+        maxAusdauer=pMaxAusdauer;
+        aktAusdauer=pAktAusdauer;
+        staerke=pStaerke;
         posX=pPosX;
         posY=pPosY;
     }
     
     // Dienste
-    public int getMaxLebenspunkte()
+    public int getMaxAusdauer()
     {
-        return maxLebenspunkte;
+        return maxAusdauer;
     }
     
-    public void setMaxLebenspunkte (int pMaxLebenspunkte)
+    public void setMaxAusdauer (int pMaxAusdauer)
     {
-        maxLebenspunkte=pMaxLebenspunkte;
+        maxAusdauer=pMaxAusdauer;
     }
     
-    public int getAktLebenspunkte()
+    public int getAktAusdauer()
     {
-        return aktLebenspunkte;
+        return aktAusdauer;
     }
     
-    public void setAktLebenspunkte (int pAktLebenspunkte)
+    public void setAktAusdauer (int pAktAusdauer)
     {
-        aktLebenspunkte=pAktLebenspunkte;
+        aktAusdauer=pAktAusdauer;
     }
     
-       public int getErfPunkte()
+       public int getStaerke()
     {
-        return erfPunkte;
+        return staerke;
     }
     
-    public void setErfPunkte (int pErfPunkte)
+    public void setStaerke (int pStaerke)
     {
-        erfPunkte=pErfPunkte;
+        staerke=pStaerke;
     }
     
     public Gegenstand getInHand()
@@ -75,27 +70,7 @@ public class Lebewesen
     {   
         inHand=pInHand;
     }
-    
-       public int getMaxRüstung()
-    {
-        return maxRüstung;
-    }
-    
-    public void setMaxRüstung (int pMaxRüstung)
-    {
-        maxRüstung=pMaxRüstung;
-    }
-    
-       public int getAktRüstung()
-    {
-        return aktRüstung;
-    }
-    
-    public void setAktRüstung (int pAktRüstung)
-    {
-        aktRüstung=pAktRüstung;
-    }
-    
+
     public int getPosX()
     {
         return posX;

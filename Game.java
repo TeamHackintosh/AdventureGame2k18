@@ -16,7 +16,7 @@ import java.util.*;
  * @author  Michael Kölling and David J. Barnes
  * @version 2011.07.31
  * @adapted by TeamHackintosh
- * @version 0.1
+ * @version 1.0
  */
 
 public class Game 
@@ -33,7 +33,7 @@ public class Game
     public Game() 
     {
         //uc new Welt();
-        aktHeld = new Held(); 
+        aktHeld = new Held(100, 100, 1, 3, 11); // Spawn (3|11)
         aktWelt = new Welt();
         parser = new Parser();
         now = new java.util.Date();
@@ -97,7 +97,7 @@ public class Game
         ausgabe+="\n";
         ausgabe+="Gib 'hilfe' ein, um eine Anleitung zu erhalten.";
         ausgabe+="\n";
-        ausgabe+="Du befindest dich bei: "+aktHeld.getPosX()+aktHeld.getPosY();
+        ausgabe+="Du befindest dich bei: "+aktHeld.getPosX()+"|"+aktHeld.getPosY();
         gibAus(ausgabe);
     }
 
@@ -109,57 +109,41 @@ public class Game
     private boolean processCommand(Command command) 
     {
         boolean wantToQuit = false;
-        String ausgabe="";
         if(command.isUnknown()) {
-            ausgabe+="Ich verstehe dich nciht...";
+            gibAus("Ich verstehe dich nicht...");
             return false;
         }
-
+        
         String commandWord = command.getCommandWord();
-        if (commandWord.equals("hilfe")) {
-            printHelp();
-        }
-        else if (commandWord.equals("gehe")) {
-            aktHeld.gehe(aktHeld.getRichtung());
-        }
-        else if (commandWord.equals("beende")) {
-            wantToQuit = quit(command);
-        }
-        else if (commandWord.equals("setzeRichtungAuf")) {
-            int richtung=4;
-            switch (command.getSecondWord())
-            {
-                case "Osten": richtung= 0;
-                break;
-                case "Sueden": richtung= 1;
-                break;
-                case "Westen": richtung= 2;
-                break;
-                case "Norden": richtung= 3;
-                break;
+        if(command.hasSecondWord())
+        {
+            String secondWord = command.getSecondWord();
+            if (commandWord.equals("setzeRichtungAuf")) {
+                    gibAus(aktHeld.setRichtung(secondWord));
             }
-            if(richtung<4){
-                aktHeld.setRichtung(richtung);
+            else if (commandWord.equals("nimm")) {
+                    gibAus(heldNimmt(secondWord));
             }
             else{
-                gibAus("Dies ist keine zulässige Richtungsangabe.");
+                    gibAus("Ich verstehe dich nicht...");
             }
         }
-        /*else if (commandWord.equals("nimm")) {
-            if(aktWelt.neueWelt[aktHeld.getPosX()][aktHeld.getPosY()]
-            ==command.getSecondWord()){
-                aktHeld.nimm(command.getSecondWord());
-            }    
-            else{
-                gibAus("Dieser Gegenstand befindet sich nicht auf diesem Feld.");
+        else{        
+            if (commandWord.equals("hilfe")) {
+                printHelp();
             }
-        }*/
-        //zweites Wort abfragen command.getSecondWord
+            else if (commandWord.equals("gehe")) {
+                gibAus(heldGeht(aktHeld.getRichtung()));
+            }
+            else if (commandWord.equals("beende")) {
+                wantToQuit = true;
+            }
+            else{
+                gibAus("Ich verstehe dich nicht...");
+            }
+        }
         return wantToQuit;
     }
-
-    // implementations of user commands:
-
     /**
      * Print out some help information.
      * Here we print some stupid, cryptic message and a list of the 
@@ -170,29 +154,92 @@ public class Game
         String ausgabe="";
         ausgabe+="Du stehst alleine auf weiter Flur in einer dir noch unbekannten Welt. Du bist noch sehr müde und erschöpft ";
         ausgabe+="von der langen Reise.";
-        ausgabe+="Mögliche Kommandos sind: ";
-        ausgabe+="   gehe beende hilfe";
+        ausgabe+="Mögliche Kommandos sind:\n";
+        ausgabe+="'gehe', 'beende', 'setzeRichtungAuf' Himmelsrichtung,  'hilfe', 'nimm' Gegenstand";
+        gibAus(ausgabe);
     }
-
-    /** 
-     * Try to go in one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     */
-
-
-    /** 
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * @return true, if this command quits the game, false otherwise.
-     */
-    private boolean quit(Command command) 
+    // Methoden, die den Helden betreffen:
+    public String heldNimmt(String pName)
     {
-        if(command.hasSecondWord()) {
-            System.out.println("Ich verstehe dich nicht. Wenn du das Spiel beenden willst, gib nur 'beende' ein.");
-            return false;
+        Gegenstand aktFeld=aktWelt.getFeld(aktHeld.getPosX(), aktHeld.getPosY());
+        String ausgabe="";
+        try{
+            if(aktFeld.getName().equals(pName)){
+                aktHeld.setInHand(aktFeld);
+                ausgabe="Du hast "+aktFeld.getName()+" aufgenommen.";
+            }    
+            else{
+                ausgabe="Auf diesem Feld befindet sich nur: "+aktFeld.getName()+".";
+            }
         }
-        else {
-            return true;  // signal that we want to quit
+        catch(NullPointerException e){
+            ausgabe="Dieses Feld ist leer.";
         }
+        return ausgabe;
     }
+     public String heldGeht(int pRichtung)
+    {
+        String ausgabe="";
+        int neuePosX=aktHeld.getPosX();
+        int neuePosY=aktHeld.getPosY();
+        switch(pRichtung)
+        {   case 0:
+            neuePosX=neuePosX+1;
+            if(aktWelt.feldIstBegehbar(neuePosX, neuePosY)==false){
+                  ausgabe="\nDu kannst nicht in diese Richtung gehen, weil dort ein Hindernis steht.";
+               }
+               else{
+                   aktHeld.setPosX(neuePosX);
+                   ausgabe="\nDu gehst einen Schritt nach Osten";
+                   if(aktWelt.feldIstLeer(neuePosX, neuePosY)==false){
+                   ausgabe+="\nAuf dem Feld, auf das du gehst, liegt ein "+aktWelt.getFeld(neuePosX, neuePosY).getName();
+              }
+            }
+            break;
+            
+            case 1:
+            neuePosY=neuePosY-1;
+            if(aktWelt.feldIstBegehbar(neuePosX, neuePosY)==false){
+                  ausgabe="\nDu kannst nicht in diese Richtung gehen, weil dort ein Hindernis steht.";
+               }
+               else{
+                   aktHeld.setPosY(neuePosY);
+                   ausgabe="\nDu gehst einen Schritt nach Norden";
+                   if(aktWelt.feldIstLeer(neuePosX, neuePosY)==false){
+                   ausgabe+="\nAuf dem Feld, auf das du gehst, liegt ein "+aktWelt.getFeld(neuePosX, neuePosY).getName();
+              }
+            }
+            break;
+            
+            case 2:
+            neuePosX=neuePosX-1;
+            if(aktWelt.feldIstBegehbar(neuePosX, neuePosY)==false){
+                  ausgabe="\nDu kannst nicht in diese Richtung gehen, weil dort ein Hindernis steht.";
+               }
+               else{
+                   aktHeld.setPosX(neuePosX);
+                   ausgabe="\nDu gehst einen Schritt nach Westen";
+                   if(aktWelt.feldIstLeer(neuePosX, neuePosY)==false){
+                   ausgabe+="\nAuf dem Feld, auf das du gehst, liegt ein "+aktWelt.getFeld(neuePosX, neuePosY).getName();
+              }
+            }
+            break;
+            
+            case 3:
+            neuePosY=neuePosY+1;
+            if(aktWelt.feldIstBegehbar(neuePosX, neuePosY)==false){
+                  ausgabe="\nDu kannst nicht in diese Richtung gehen, weil dort ein Hindernis steht.";
+               }
+               else{
+                   aktHeld.setPosY(neuePosY);
+                   ausgabe="\nDu gehst einen Schritt nach Sueden";
+                   if(aktWelt.feldIstLeer(neuePosX, neuePosY)==false){
+                   ausgabe+="\nAuf dem Feld, auf das du gehst, liegt ein "+aktWelt.getFeld(neuePosX, neuePosY).getName();
+              }
+            }
+            break;
+        }
+        ausgabe+="\nDeine aktuelle Position ist: "+aktHeld.getPosX()+"|"+aktHeld.getPosY();
+        return ausgabe;
+    }   
 }

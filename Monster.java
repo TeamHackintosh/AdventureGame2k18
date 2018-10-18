@@ -3,7 +3,7 @@
  * @author 
  * @version 
  */
-public class Monster
+public class Monster extends Lebewesen
 {
     // Bezugsobjekte
 
@@ -12,9 +12,12 @@ public class Monster
     // Konstruktor
     public Monster()
     {
-
+        
     }
-
+    public Monster(int pMaxAusdauer, int pAktAusdauer, int pStaerke, int pPosX, int pPosY)
+    {
+        super(pMaxAusdauer, pAktAusdauer, pStaerke, pPosX, pPosY);
+    }
     // Dienste
 
 }

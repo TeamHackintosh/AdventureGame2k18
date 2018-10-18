@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Schluessel
+comment0.text=\r\n\ Beschreiben\ Sie\ hier\ die\ Klasse\ Schluessel.\r\n\ \r\n\ @author\ (Ihr\ Name)\ \r\n\ @version\ (eine\ Versionsnummer\ oder\ ein\ Datum)\r\n
+comment1.params=
+comment1.target=Schluessel()
+comment1.text=\r\n\ Konstruktor\ f\u00FCr\ Objekte\ der\ Klasse\ Schluessel\r\n
+comment2.params=pTuer
+comment2.target=Schluessel(Tuer)
+comment3.params=pTuer
+comment3.target=void\ setTuer(Tuer)
+comment4.params=
+comment4.target=Tuer\ getTuer()
+comment5.params=pTuer
+comment5.target=boolean\ oeffne(Tuer)
+numComments=6

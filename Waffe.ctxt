@@ -1,0 +1,20 @@
+#BlueJ class context
+comment0.target=Waffe
+comment0.text=\r\n\ Team-Hackintosh\ \ \ \r\n\ V\ 0.1\r\n\ Diese\ Klasse\ ist\ die\ Oberklasse\ aller\ Waffen.\ Hier\ werden\ die\ gemeinsamen\ Attribute\ festgelegt.\ \r\n
+comment1.params=
+comment1.target=Waffe()
+comment2.params=pAktHaltbarkeit\ pMaxHaltbarkeit\ pSchaden
+comment2.target=Waffe(int,\ int,\ int)
+comment3.params=pMaxHaltbarkeit
+comment3.target=void\ setMaxHaltbarkeit(int)
+comment4.params=pAktHaltbarkeit
+comment4.target=void\ setAktHaltbarkeit(int)
+comment5.params=pSchaden
+comment5.target=void\ setSchaden(int)
+comment6.params=
+comment6.target=int\ getMaxHaltbarkeit()
+comment7.params=
+comment7.target=int\ getAktHaltbarkeit()
+comment8.params=
+comment8.target=int\ getSchaden()
+numComments=9
