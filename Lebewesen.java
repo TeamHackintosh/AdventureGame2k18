@@ -9,8 +9,8 @@ public class Lebewesen
     // Bezugsobjekte
 
     // Attribute
-    private int maxAusdauer; 
-    private int aktAusdauer; // Ausdauer bezeichnet zugleich auch die Lebenspunkte, ist die Ausdauer = 0, stirbt das Lebewesen
+    private int maxLeben; 
+    private int aktLeben; // Leben bezeichnet zugleich auch die Lebenspunkte, ist die Leben = 0, stirbt das Lebewesen
     private int staerke; // bezeichnet die Kampfstaerke, bei Monstern eine Konstante, der Held sammelt im Laufe des Spiels zusätzliche Erfahrung, wodurch sich seine Staerke steigert
     private Gegenstand inHand;
     private int posX,posY;
@@ -19,36 +19,37 @@ public class Lebewesen
     // Konstruktor
     public Lebewesen()
     {
-        
+        inHand=null;
     }
-    public Lebewesen(int pMaxAusdauer, int pAktAusdauer, int pStaerke, int pPosX, int pPosY)
+    public Lebewesen(int pMaxLeben, int pAktLeben, int pStaerke, int pPosX, int pPosY)
     {
-        maxAusdauer=pMaxAusdauer;
-        aktAusdauer=pAktAusdauer;
+        maxLeben=pMaxLeben;
+        aktLeben=pAktLeben;
         staerke=pStaerke;
         posX=pPosX;
         posY=pPosY;
+        inHand=null;
     }
     
     // Dienste
-    public int getMaxAusdauer()
+    public int getMaxLeben()
     {
-        return maxAusdauer;
+        return maxLeben;
     }
     
-    public void setMaxAusdauer (int pMaxAusdauer)
+    public void setMaxLeben (int pMaxLeben)
     {
-        maxAusdauer=pMaxAusdauer;
+        maxLeben=pMaxLeben;
     }
     
-    public int getAktAusdauer()
+    public int getAktLeben()
     {
-        return aktAusdauer;
+        return aktLeben;
     }
     
-    public void setAktAusdauer (int pAktAusdauer)
+    public void setAktLeben (int pAktLeben)
     {
-        aktAusdauer=pAktAusdauer;
+        aktLeben=pAktLeben;
     }
     
        public int getStaerke()
@@ -66,14 +67,34 @@ public class Lebewesen
         return inHand;
     }
     
+    public boolean handIstLeer(){
+        if(inHand==null)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
     public void setInHand (Gegenstand pInHand)
     {   
         inHand=pInHand;
     }
-
+    
+    public void leereInHand(){
+        inHand=null;
+    }
+    
     public int getPosX()
     {
         return posX;
+    }
+    
+    public String getPosXString()
+    {
+        Integer x = new Integer(posX);
+        return x.toString();
     }
     
     public void setPosX (int pPosX)
@@ -91,6 +112,11 @@ public class Lebewesen
         posY=pPosY;
     }
     
+    public String getPosYString()
+    {
+        Integer y = new Integer(posY);
+        return y.toString();
+    }
     
    
 }

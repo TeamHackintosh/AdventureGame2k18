@@ -612,25 +612,32 @@ public class Welt
         neueWelt[49][43] = new Busch();
         neueWelt[49][44] = new Busch();
     }
-    
+    public void setFeld(int x, int y, Gegenstand pGegenstand){
+        neueWelt[x][y]=pGegenstand;
+    }
     public Gegenstand getFeld(int xPos, int yPos)
     {
        return neueWelt[xPos][yPos];
     }
+    public void leereFeld(int x, int y){
+        neueWelt[x][y]=null;
+    }
     public boolean feldIstBegehbar(int xPos, int yPos)
     {
         boolean wert=false;
-        try
-        {
-            if(getFeld(xPos, yPos).getName()!="wand"&&getFeld(xPos, yPos).getName()!="baum"&&getFeld(xPos, yPos).getName()!="busch"){
-                wert=true;
+            if(xPos>=0&&yPos>=0){
+                try
+                {
+                    if(getFeld(xPos, yPos).getName()!="wand"&&getFeld(xPos, yPos).getName()!="baum"&&getFeld(xPos, yPos).getName()!="busch"){
+                        wert=true;
+                    }
+                }
+                catch(NullPointerException e){
+                    wert=true;
+                }
             }
+          return wert;    
         }
-        catch(NullPointerException e){
-            wert=true;
-        }
-        return wert;
-    }
     public boolean feldIstLeer(int xPos, int yPos){
         if(getFeld(xPos, yPos)==null)
         {

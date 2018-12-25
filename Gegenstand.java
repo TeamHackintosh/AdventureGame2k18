@@ -32,7 +32,9 @@ public class Gegenstand
     {
         return name;
     }
-    
+
+
+
     /*public int getPosX()
     {
         return posX;
