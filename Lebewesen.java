@@ -14,14 +14,14 @@ public class Lebewesen
     private int staerke; // bezeichnet die Kampfstaerke, bei Monstern eine Konstante, der Held sammelt im Laufe des Spiels zusätzliche Erfahrung, wodurch sich seine Staerke steigert
     private Gegenstand inHand;
     private int posX,posY;
-    
-    
+    private String art;
+    private int richtung;
     // Konstruktor
     public Lebewesen()
     {
         inHand=null;
     }
-    public Lebewesen(int pMaxLeben, int pAktLeben, int pStaerke, int pPosX, int pPosY)
+    public Lebewesen(int pMaxLeben, int pAktLeben, int pStaerke, int pPosX, int pPosY, String pArt, int pRichtung)
     {
         maxLeben=pMaxLeben;
         aktLeben=pAktLeben;
@@ -29,6 +29,8 @@ public class Lebewesen
         posX=pPosX;
         posY=pPosY;
         inHand=null;
+        art=pArt;
+        richtung = pRichtung;
     }
     
     // Dienste
@@ -91,12 +93,6 @@ public class Lebewesen
         return posX;
     }
     
-    public String getPosXString()
-    {
-        Integer x = new Integer(posX);
-        return x.toString();
-    }
-    
     public void setPosX (int pPosX)
     {
         posX=pPosX;
@@ -112,11 +108,21 @@ public class Lebewesen
         posY=pPosY;
     }
     
-    public String getPosYString()
-    {
-        Integer y = new Integer(posY);
-        return y.toString();
+    public String getArt(){
+        return art;
     }
     
-   
+    public void setArt(String pArt){
+        art=pArt;
+    }
+    
+    public int getRichtung()
+    {
+        return richtung;
+    }
+    
+    public void setRichtung(int pRichtung)
+    {
+       richtung = pRichtung;
+    }
 }

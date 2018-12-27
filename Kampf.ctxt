@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Kampf
+comment0.text=\r\n\ Beschreiben\ Sie\ hier\ die\ Klasse\ Kampf.\r\n\ \r\n\ @author\ (Ihr\ Name)\ \r\n\ @version\ (eine\ Versionsnummer\ oder\ ein\ Datum)\r\n
+comment1.params=pHeld\ pMonster
+comment1.target=Kampf(Held,\ Monster)
+comment1.text=\r\n\ Konstruktor\ f\u00FCr\ Objekte\ der\ Klasse\ Kampf\r\n
+comment2.params=e
+comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment3.params=pInt
+comment3.target=java.lang.String\ intToString(int)
+comment4.params=
+comment4.target=void\ aktualisiereKampfFrame()
+comment5.params=
+comment5.target=void\ angriff()
+comment6.params=
+comment6.target=void\ heldSchlaegt()
+comment7.params=
+comment7.target=void\ monsterSchlaegt()
+numComments=8
