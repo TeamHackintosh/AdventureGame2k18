@@ -176,7 +176,7 @@ public class Welt
         neueWelt[13][42] = new Baum();
         neueWelt[13][45] = new Baum();
         //
-        neueWelt[14][0] = new Wand();
+        neueWelt[14][0] = new Rucksack();
         
         neueWelt[14][3] = new Waffe();
         

@@ -12,11 +12,11 @@ public class Monster extends Lebewesen
     // Konstruktor
     public Monster()
     {
-        
+        super("monster");
     }
-    public Monster(int pMaxAusdauer, int pAktAusdauer, int pStaerke, int pPosX, int pPosY, String pArt, int pRichtung)
+    public Monster(int pMaxAusdauer, int pAktAusdauer, int pStaerke, int pPosX, int pPosY, int pRichtung, Gegenstand pInHand)
     {
-        super(pMaxAusdauer, pAktAusdauer, pStaerke, pPosX, pPosY, pArt, pRichtung);
+        super(pMaxAusdauer, pAktAusdauer, pStaerke, pPosX, pPosY, "monster", pRichtung, pInHand);
     }
     // Dienste
 

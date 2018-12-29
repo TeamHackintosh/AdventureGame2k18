@@ -17,18 +17,25 @@ public class Lebewesen
     private String art;
     private int richtung;
     // Konstruktor
-    public Lebewesen()
+    public Lebewesen(String pArt)
     {
         inHand=null;
     }
-    public Lebewesen(int pMaxLeben, int pAktLeben, int pStaerke, int pPosX, int pPosY, String pArt, int pRichtung)
+    public Lebewesen(int pPosX, int pPosY, String pArt, int pRichtung, Gegenstand pInHand){
+        posX=pPosX;
+        posY=pPosY;
+        inHand=pInHand;
+        art=pArt;
+        richtung = pRichtung;
+    }
+    public Lebewesen(int pMaxLeben, int pAktLeben, int pStaerke, int pPosX, int pPosY, String pArt, int pRichtung, Gegenstand pInHand)
     {
         maxLeben=pMaxLeben;
         aktLeben=pAktLeben;
         staerke=pStaerke;
         posX=pPosX;
         posY=pPosY;
-        inHand=null;
+        inHand=pInHand;
         art=pArt;
         richtung = pRichtung;
     }
