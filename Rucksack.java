@@ -14,6 +14,8 @@ public class Rucksack extends Gegenstand
     public Rucksack()
     {
         super("rucksack");
+        groesse=10;
+        inhalt=new Gegenstand[groesse];
     }
     public Rucksack(int pGroesse)
     {

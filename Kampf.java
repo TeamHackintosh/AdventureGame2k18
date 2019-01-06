@@ -15,11 +15,14 @@ public class Kampf extends JFrame implements ActionListener
     private ImageIcon schwerter;
     private JTextArea ausgabeFeld;
     private JFrame kampfFrame;
-    private JLabel heldLeben, heldLebenAkt, heldLebenMax, heldStaerke, monsterLeben, monsterLebenAkt, monsterLebenMax, monsterStaerke;
-    private JPanel kampfPanel, held, monster;
+    private JLabel heldLeben, heldLebenAkt, heldLebenMax, heldStaerke, monsterLeben, monsterLebenAkt, monsterLebenMax, monsterStaerke, hWaffeHaltbarkeit, hWaffeSchaden, mWaffeHaltbarkeit, 
+    mWaffeSchaden;
+    private JPanel kampfPanel, held, monster, hWaffeP, mWaffeP;
     private JButton zuschlagen, fluechten;
     private Held aktHeld;
     private Monster aktMonster;
+    private Waffe hWaffe, mWaffe;
+    private boolean mHatWaffe, hHatWaffe;
     private Random random;
     /**
     * Konstruktor für Objekte der Klasse Kampf
@@ -29,7 +32,7 @@ public class Kampf extends JFrame implements ActionListener
         aktHeld = pHeld;
         aktMonster = pMonster;
         random = new Random();
-        schwerter = new ImageIcon("schwerter.svg");
+        schwerter = new ImageIcon("schwerter.png");
         kampfFrame = new JFrame();
         ausgabeFeld = new JTextArea("Kampfablauf:\n",5,5);
         kampfPanel = new JPanel();
@@ -46,10 +49,26 @@ public class Kampf extends JFrame implements ActionListener
         heldLebenAkt = new JLabel(intToString(aktHeld.getAktLeben()));
         heldLebenMax = new JLabel("/"+intToString(aktHeld.getMaxLeben()));
         heldStaerke = new JLabel("Staerke: "+intToString(aktHeld.getStaerke()));
+        hHatWaffe=false;
+        try{
+            if(aktHeld.getInHand().getName().equals("waffe")){
+                hWaffe=(Waffe)aktHeld.getInHand();
+                hWaffeHaltbarkeit = new JLabel("Waffe: Haltbarkeit: "+hWaffe.getAktHaltbarkeit()+"/"+hWaffe.getMaxHaltbarkeit());
+                hWaffeSchaden = new JLabel("Schaden: "+hWaffe.getSchaden());
+                hWaffeP = new JPanel();
+                hWaffeP.add(hWaffeHaltbarkeit);
+                hWaffeP.add(hWaffeSchaden);
+                held.add(hWaffeP);
+                hHatWaffe=true;
+            }
+        } 
+        catch(NullPointerException e){}
         held.add(heldLeben);
         held.add(heldLebenAkt);
         held.add(heldLebenMax);
         held.add(heldStaerke);
+        
+        
         monsterLeben = new JLabel("Leben: ");
         monsterLebenAkt = new JLabel(intToString(aktMonster.getAktLeben()));
         monsterLebenMax = new JLabel("/"+intToString(aktMonster.getMaxLeben()));
@@ -58,6 +77,20 @@ public class Kampf extends JFrame implements ActionListener
         monster.add(monsterLebenAkt);
         monster.add(monsterLebenMax);
         monster.add(monsterStaerke);
+        mHatWaffe=false;
+        try{
+            if(aktMonster.getInHand().getName().equals("waffe")){
+                mWaffe=(Waffe)aktMonster.getInHand();
+                mWaffeHaltbarkeit = new JLabel("Waffe: Haltbarkeit: "+mWaffe.getAktHaltbarkeit()+"/"+mWaffe.getMaxHaltbarkeit());
+                mWaffeSchaden = new JLabel("Schaden: "+mWaffe.getSchaden());
+                mWaffeP = new JPanel();
+                mWaffeP.add(mWaffeHaltbarkeit);
+                mWaffeP.add(mWaffeSchaden);
+                monster.add(mWaffeP);
+                mHatWaffe=true;
+            }
+        } 
+        catch(NullPointerException e){}
         kampfPanel.add(zuschlagen);
         kampfPanel.add(held);
         kampfPanel.add(monster);
@@ -71,6 +104,7 @@ public class Kampf extends JFrame implements ActionListener
     public void actionPerformed(ActionEvent e){
       if(e.getSource() == this.fluechten)
       {
+          JOptionPane.showMessageDialog(null,"Du bist geflohen. Du erhälst keine Erfahrungspunkte.", "Niederlage", JOptionPane.INFORMATION_MESSAGE, schwerter);
           kampfFrame.dispose();
       }
       else if(e.getSource() == this.zuschlagen)
@@ -87,7 +121,13 @@ public class Kampf extends JFrame implements ActionListener
     public void aktualisiereKampfFrame(){
         monsterLebenAkt.setText(intToString(aktMonster.getAktLeben()));
         heldLebenAkt.setText(intToString(aktHeld.getAktLeben()));
-    }
+        if(hHatWaffe){
+            hWaffeHaltbarkeit.setText("Waffe: Haltbarkeit: "+hWaffe.getAktHaltbarkeit()+"/"+hWaffe.getMaxHaltbarkeit());
+        }
+        if(mHatWaffe){
+                mWaffeHaltbarkeit.setText("Waffe: Haltbarkeit :"+mWaffe.getAktHaltbarkeit()+"/"+mWaffe.getMaxHaltbarkeit());
+        }
+        }
     public void angriff(){
         if(random.nextInt(2) == 0)
         {
@@ -110,7 +150,7 @@ public class Kampf extends JFrame implements ActionListener
                 }
                 else{
                     aktHeld.setStaerke(aktHeld.getStaerke()+aktMonster.getStaerke());
-                    JOptionPane.showMessageDialog(null,"Du hast das Monster besiegt und erhälst "+aktMonster.getStaerke()+" Erfahrungspunkte.", "Niederlage",
+                    JOptionPane.showMessageDialog(null,"Du hast das Monster besiegt und erhälst "+aktMonster.getStaerke()+" Erfahrungspunkte.", "Sieg",
                     JOptionPane.INFORMATION_MESSAGE, schwerter);
                     kampfFrame.dispose();
                 }
@@ -129,7 +169,7 @@ public class Kampf extends JFrame implements ActionListener
                     ausgabeFeld.append("Das Monster hat dich getroffen.");
                 }
                 else{
-                    JOptionPane.showMessageDialog(null,"Das Monster hat dich besiegt.", "Niederlage", JOptionPane.INFORMATION_MESSAGE, schwerter);
+                    JOptionPane.showMessageDialog(null,"Das Monster hat dich besiegt. Du erhälst keine Erfahrungspunkte.", "Niederlage", JOptionPane.INFORMATION_MESSAGE, schwerter);
                     kampfFrame.dispose();
                 } 
             }

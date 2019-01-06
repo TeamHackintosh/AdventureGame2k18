@@ -23,9 +23,9 @@ public class GUI extends JFrame implements ActionListener
     //GUI
     private JFrame meinJFrame;
     private JLabel xFeld, yFeld;
-    private JPanel richtungPanel, positionPanel, hauptPanel, feldPanel, gegenstandPanel, personPanel, handPanel, handButtonPanel, rucksackPanel, untenPanel;
-    private JButton nordButton, suedButton, westButton, ostButton, geheButton, nimmButton, kampfButton, inInvButton, ausHandButton, inHandButton, ausInvButton, hilfeButton, beendeButton;
-    private JLabel xLabel, yLabel, nordLabel, pfeilLabel, nimmLabel, personLabel, inHandLabel;
+    private JPanel richtungPanel, positionPanel, hauptPanel, feldPanel, gegenstandPanel, personPanel, handPanel, handButtonPanel, rucksackPanel, untenPanel, waffenPanel;
+    private JButton nordButton, suedButton, westButton, ostButton, geheButton, nimmButton, kampfButton, inRButton, ausHandButton, inHandButton, ausRButton, hilfeButton, beendeButton;
+    private JLabel xLabel, yLabel, nordLabel, pfeilLabel, nimmLabel, personLabel, inHandLabel, haltbarkeitLabel, schadenLabel;
     private ImageIcon rechtsP, linksP, hochP, runterP, hilfe, schwerter;
     private JComboBox<Object> rucksackBox;
     private FlowLayout standardLayout;
@@ -38,7 +38,7 @@ public class GUI extends JFrame implements ActionListener
         //Welt und Akteure erzeugen und positionieren
         aktHeld = new Held(100, 100, 1, 13, 0, 0, null); // Spawn (13|0)
         aktWelt = new Welt(); 
-        monster1 = new Monster(5, 5, 3, 23, 2, 0, null); // Spawn (23|2)
+        monster1 = new Monster(5, 5, 3, 14, 4, 0, null); // Spawn (14|4)
         monster2 = new Monster(5, 5, 3, 28, 2, 0, null); // Spawn (28|2)
         monster3 = new Monster(5, 5, 3, 25, 3, 0, null); // Spawn (25|3)
         akteure = new Lebewesen[3];
@@ -151,15 +151,22 @@ public class GUI extends JFrame implements ActionListener
         handButtonPanel = new JPanel();
         ausHandButton = new JButton("Wegwerfen");
         ausHandButton.addActionListener(this);
-        inInvButton = new JButton("In den Rucksack verschieben");
-        inInvButton.addActionListener(this);
-        handButtonPanel.add(inInvButton);
+        inRButton = new JButton("In den Rucksack verschieben");
+        inRButton.addActionListener(this);
+        handButtonPanel.add(inRButton);
         handButtonPanel.add(ausHandButton);
-        
-        inHandLabel = new JLabel("");
         handButtonPanel.setVisible(false);
         
+        inHandLabel = new JLabel("");
+        haltbarkeitLabel = new JLabel("");
+        schadenLabel = new JLabel("");
+        waffenPanel = new JPanel();
+        waffenPanel.setVisible(false);
+        
+        waffenPanel.add(haltbarkeitLabel);
+        waffenPanel.add(schadenLabel);
         handPanel.add(inHandLabel);
+        handPanel.add(waffenPanel);
         handPanel.add(handButtonPanel);
         
         //Rucksack-Panel
@@ -253,7 +260,7 @@ public class GUI extends JFrame implements ActionListener
     }
     /** 
        Methode, die dafür sorgt, dass etwas passiert, wenn auf die Buttons gedrückt wird
-       private JButton nordButton, suedButton, westButton, ostButton, geheButton, nimmButton, kampfButton, inInvButton, ausHandButton, inHandButton, ausInvButton, hilfeButton, beendeButton;
+       private JButton nordButton, suedButton, westButton, ostButton, geheButton, nimmButton, kampfButton, inRButton, ausHandButton, inHandButton, ausRButton, hilfeButton, beendeButton;
        */
     
     public void actionPerformed(ActionEvent e){
@@ -279,7 +286,8 @@ public class GUI extends JFrame implements ActionListener
       }
       else if(e.getSource() == this.geheButton)
       {
-          heldGeht();
+          int ausgabe=wesenGeht(aktHeld);
+          heldGeht(ausgabe);
       }
       else if(e.getSource() == this.nimmButton)
       {
@@ -287,37 +295,63 @@ public class GUI extends JFrame implements ActionListener
           heldOeffnetTuer();
         }
         else{
-          heldNimmt();
+          Gegenstand ausgabe=wesenNimmt(aktHeld); //wesenNimmt gibt den genommenen Gegenstand zurück
+          if(ausgabe!=null){
+              heldNimmt(ausgabe);
+              gegenstandPanel.setVisible(false);
+            }
+          else{
+              JOptionPane.showMessageDialog(null,"Du hast bereits einen Gegenstand in der Hand.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
+            }
         }
       }
       else if(e.getSource() == this.ausHandButton)
       {
-          heldWirftWeg();
+          Gegenstand ausgabe=wesenWirftWeg(aktHeld); //wesenWirftWeg gibt den weggeworfenen Gegenstand zurück
+          if(ausgabe!=null){
+          heldWirftWeg(ausgabe);
+          gegenstandPanel.setVisible(true);
+        }
+        else{
+          JOptionPane.showMessageDialog(null,"Auf diesem Feld befindet sich bereits ein Gegenstand.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
+        }
       }
       else if(e.getSource() == this.inHandButton)
       {
           Gegenstand gegenstand = (Gegenstand) rucksackBox.getSelectedItem();
-          if(gegenstand!=null){
-          aktHeld.setInHand(gegenstand);
-          inHandLabel.setText(gegenstand.getName());
-          rucksackBox.removeItem(gegenstand);
-          aktHeld.getRucksack().packeAus(gegenstand);
-          inHandLabel.setVisible(true);
-          handButtonPanel.setVisible(true);
+          if(gegenstand==null){
+          JOptionPane.showMessageDialog(null,"Dein Rucksack ist leer." ,"Fehlermeldung",
+          JOptionPane.ERROR_MESSAGE); 
+        }
+        else if(!aktHeld.handIstLeer()){
+            JOptionPane.showMessageDialog(null,"Du hast bereits einen Gegenstand in der Hand.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
         }
         else{
-            JOptionPane.showMessageDialog(null,"Dein Rucksack ist leer." ,"Fehlermeldung",
-            JOptionPane.ERROR_MESSAGE);
+          aktHeld.setInHand(gegenstand);
+          heldNimmt(gegenstand);
+          rucksackBox.removeItem(gegenstand);
+          aktHeld.getRucksack().packeAus(gegenstand);
         }
       }
-      else if(e.getSource() == this.inInvButton)
+      else if(e.getSource() == this.inRButton)
       {
           Gegenstand gegenstand = aktHeld.getInHand();
-          aktHeld.getRucksack().packeEin(gegenstand);
-          rucksackBox.addItem(gegenstand);
-          aktHeld.leereInHand();
-          handButtonPanel.setVisible(false);
-          inHandLabel.setVisible(false);
+          if(gegenstand==null){
+            JOptionPane.showMessageDialog(null,"Deine Hand ist leer." ,"Fehlermeldung",
+            JOptionPane.ERROR_MESSAGE); 
+         }
+         else{
+          boolean ausgabe=aktHeld.getRucksack().packeEin(gegenstand);
+          if(ausgabe==true){
+            rucksackBox.addItem(gegenstand);
+            aktHeld.leereInHand();
+            heldWirftWeg(gegenstand);
+         }
+         else{
+                JOptionPane.showMessageDialog(null,"Dein Rucksack ist voll." ,"Fehlermeldung",
+                JOptionPane.ERROR_MESSAGE); 
+         }
+        }
       }
       else if(e.getSource() == this.kampfButton)
       {
@@ -341,7 +375,7 @@ public class GUI extends JFrame implements ActionListener
       {
          Object[] options = {"Ja", "Nein"};
           int answer = JOptionPane.showOptionDialog(null,
-          "Danke, dass du dieses Spiel von Team Hackintosh gespielt hast! aber möchtest du wirklich beenden?",
+          "Danke, dass du dieses Spiel von Team Hackintosh gespielt hast! Aber möchtest du wirklich beenden?",
           "Beenden?",
           JOptionPane.YES_NO_OPTION,
           JOptionPane.QUESTION_MESSAGE,
@@ -469,16 +503,16 @@ public class GUI extends JFrame implements ActionListener
             try{
                 Thread.sleep(1000); //warte eine Sekunde, damit sich jedes Lebewesen einige Sekunden auf jedem Feld aufhält
             }
-            catch(InterruptedException e){//nichts
+            catch(InterruptedException e){
+                System.out.println("Interrupted Exception aufgefangen.");
             }
         }
     }
     //Methoden, die den Helden betreffen
     /** 
-       Methode, die den Helden bewegt. Führt wesenGeht(aktHeld) aus, aktualisiert die GUI und leitet evtl. den Kampf ein
+       Methode, die den Helden bewegt. Aktualisiert die GUI und leitet evtl. den Kampf ein
        */
-    public void heldGeht(){
-        int ausgabe=wesenGeht(aktHeld);
+    public void heldGeht(int ausgabe){
         int aktX = aktHeld.getPosX();
         int aktY = aktHeld.getPosY();
         //Konnte der Held bewegt werden?
@@ -534,14 +568,13 @@ public class GUI extends JFrame implements ActionListener
         yFeld.setText(intToString(aktHeld.getPosY()));
     }
     /** 
-       Methode, die den Helden etwas nehmen lässt. Führt wesenNimmt(aktHeld) aus und aktualisiert die GUI 
+       Methode, die den Helden etwas nehmen lässt. Aktualisiert die GUI 
        */
-    public void heldNimmt(){
-        Gegenstand ausgabe=wesenNimmt(aktHeld); //wesenNimmt gibt den genommenen Gegenstand zurück
-        //Konnte der Held einen Gegenstand nehmen?
-        if(ausgabe!=null){
-            //Ja
-            if(ausgabe.getName()=="rucksack"){
+    public void heldNimmt(Gegenstand ausgabe){
+        
+
+        
+            if(ausgabe.getName().equals("rucksack")){
                 aktHeld.setRucksack((Rucksack) aktHeld.getInHand());
                 rucksackPanel.setVisible(true);
                 aktHeld.leereInHand();
@@ -550,29 +583,20 @@ public class GUI extends JFrame implements ActionListener
                 inHandLabel.setText(ausgabe.getName());
                 inHandLabel.setVisible(true);
                 handButtonPanel.setVisible(true);
+                if(ausgabe.getName().equals("waffe")){
+                    Waffe waffe = (Waffe) ausgabe;
+                    haltbarkeitLabel.setText("Haltbarkeit: "+waffe.getAktHaltbarkeit()+"/"+waffe.getMaxHaltbarkeit());
+                    schadenLabel.setText("Schaden: "+waffe.getSchaden());
+                    waffenPanel.setVisible(true);
+                }
             }
-            gegenstandPanel.setVisible(false);
-        }
-        else{
-            //Nein, also drucke eine Fehlermeldung (dass auf dem Feld kein Gegenstand lag, kann ausgeschlossen werden, da in diesem Fall der "Nehmen"-Button verborgen ist)
-            JOptionPane.showMessageDialog(null,"Du hast bereits einen Gegenstand in der Hand.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
-        }
+
     }
-    public void heldWirftWeg(){
-        Gegenstand ausgabe = wesenWirftWeg(aktHeld); //wesenWirftWeg gibt den weggeworfenen Gegenstand zurück
-        //Konnte der Held einen Gegenstand wegwerfen?
-        if(ausgabe!=null){
-            //Ja
+    public void heldWirftWeg(Gegenstand ausgabe){
             handButtonPanel.setVisible(false);
             inHandLabel.setVisible(false);
+            waffenPanel.setVisible(false);
             nimmLabel.setText(ausgabe.getName());
-            gegenstandPanel.setVisible(true);
-        }
-        else
-        {   
-            //Nein, also drucke eine Fehlermeldung (dass in der Hand kein Gegenstand war, kann ausgeschlossen werden, da in diesem Fall der "Wegwerfen"-Button verborgen ist)
-            JOptionPane.showMessageDialog(null,"Auf diesem Feld befindet sich bereits ein Gegenstand.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
-        }
     }
     public void heldOeffnetTuer(){
         Schluessel schluessel = (Schluessel) aktHeld.getInHand();
@@ -584,7 +608,6 @@ public class GUI extends JFrame implements ActionListener
         else{
             JOptionPane.showMessageDialog(null,"Der Schluessel passt nicht.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
         }
-            
-        
+
     }
 }
