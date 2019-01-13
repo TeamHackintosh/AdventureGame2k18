@@ -1,6 +1,6 @@
 
 /**
- * @Sam Horn & Moritz Wagner 
+ * @Team-Hackintosh
  * @1.0
  */
 public class Welt
@@ -178,7 +178,9 @@ public class Welt
         //
         neueWelt[14][0] = new Rucksack();
         
-        neueWelt[14][3] = new Waffe();
+        neueWelt[14][3] = new Waffe(50,10);
+        neueWelt[14][4] = new Tuer();
+        neueWelt[14][5] = new Schluessel((Tuer) neueWelt[14][4]);
         
         neueWelt[14][20] = new Baum();
         neueWelt[14][24] = new Baum();

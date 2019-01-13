@@ -1,6 +1,6 @@
 
 /**
- * @author 
+ * @Team-Hackintosh
  * @version 
  */
 public class Monster extends Lebewesen

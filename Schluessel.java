@@ -2,7 +2,7 @@
 /**
  * Beschreiben Sie hier die Klasse Schluessel.
  * 
- * @author (Ihr Name) 
+ * @Team-Hackintosh 
  * @version (eine Versionsnummer oder ein Datum)
  */
 public class Schluessel extends Gegenstand
@@ -15,10 +15,11 @@ public class Schluessel extends Gegenstand
      */
     public Schluessel()
     {
-        
+        super("schluessel");
     }
     public Schluessel(Tuer pTuer)
     {
+        super("schluessel");
         tuer=pTuer;
     }
     //Methoden

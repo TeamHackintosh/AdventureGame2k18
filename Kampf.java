@@ -6,7 +6,7 @@ import javax.swing.text.DefaultCaret;
 /**
  * Beschreiben Sie hier die Klasse Kampf.
  * 
- * @author (Ihr Name) 
+ * @Team-Hackintosh
  * @version (eine Versionsnummer oder ein Datum)
  */
 public class Kampf extends JFrame implements ActionListener
@@ -50,6 +50,10 @@ public class Kampf extends JFrame implements ActionListener
         heldLebenMax = new JLabel("/"+intToString(aktHeld.getMaxLeben()));
         heldStaerke = new JLabel("Staerke: "+intToString(aktHeld.getStaerke()));
         hHatWaffe=false;
+        held.add(heldLeben);
+        held.add(heldLebenAkt);
+        held.add(heldLebenMax);
+        held.add(heldStaerke);
         try{
             if(aktHeld.getInHand().getName().equals("waffe")){
                 hWaffe=(Waffe)aktHeld.getInHand();
@@ -63,10 +67,7 @@ public class Kampf extends JFrame implements ActionListener
             }
         } 
         catch(NullPointerException e){}
-        held.add(heldLeben);
-        held.add(heldLebenAkt);
-        held.add(heldLebenMax);
-        held.add(heldStaerke);
+        
         
         
         monsterLeben = new JLabel("Leben: ");
@@ -137,18 +138,19 @@ public class Kampf extends JFrame implements ActionListener
         {
             heldSchlaegt();
         }
-        aktualisiereKampfFrame();
     }
     public void heldSchlaegt()
     {
             int ausgabe=0;
             if(random.nextInt(5)!=0)
             {
-                if(aktMonster.getAktLeben()>=aktHeld.getStaerke()){    
-                    aktMonster.setAktLeben(aktMonster.getAktLeben()-aktHeld.getStaerke());
-                    ausgabeFeld.append("Du hast das Monster getroffen.");
+                aktMonster.setAktLeben(aktMonster.getAktLeben()-aktHeld.getStaerke());
+                if(hHatWaffe){
+                    aktMonster.setAktLeben(aktMonster.getAktLeben()-hWaffe.getSchaden());
                 }
-                else{
+                aktualisiereKampfFrame();
+                ausgabeFeld.append("Du hast das Monster getroffen.\n");
+                if(aktMonster.getAktLeben()<=0){    
                     aktHeld.setStaerke(aktHeld.getStaerke()+aktMonster.getStaerke());
                     JOptionPane.showMessageDialog(null,"Du hast das Monster besiegt und erhälst "+aktMonster.getStaerke()+" Erfahrungspunkte.", "Sieg",
                     JOptionPane.INFORMATION_MESSAGE, schwerter);
@@ -157,25 +159,27 @@ public class Kampf extends JFrame implements ActionListener
             }
             else
             {
-                ausgabeFeld.append("Du hast das Monster nicht getroffen.");
+                ausgabeFeld.append("Du hast das Monster nicht getroffen.\n");
             }
             aktualisiereKampfFrame();
         }
         public void monsterSchlaegt(){
             if(random.nextInt(5)!=0)
             {
-                if(aktHeld.getAktLeben()>=aktMonster.getStaerke()){    
-                    aktHeld.setAktLeben(aktHeld.getAktLeben()-aktMonster.getStaerke());
-                    ausgabeFeld.append("Das Monster hat dich getroffen.");
+                aktHeld.setAktLeben(aktHeld.getAktLeben()-aktMonster.getStaerke());
+                if(mHatWaffe){
+                    aktHeld.setAktLeben(aktHeld.getAktLeben()-mWaffe.getSchaden());
                 }
-                else{
-                    JOptionPane.showMessageDialog(null,"Das Monster hat dich besiegt. Du erhälst keine Erfahrungspunkte.", "Niederlage", JOptionPane.INFORMATION_MESSAGE, schwerter);
-                    kampfFrame.dispose();
-                } 
+                aktualisiereKampfFrame();
+                ausgabeFeld.append("Das Monster hat dich getroffen.\n");
+                if(aktHeld.getAktLeben()<=0){    
+                    JOptionPane.showMessageDialog(null,"Das Monster hat dich besiegt. Du stirbst.", "Du stirbst!", JOptionPane.INFORMATION_MESSAGE, schwerter);
+                    System.exit(0);
+                }
             }
             else
             {
-                ausgabeFeld.append("Du bist dem Monster ausgewichen.");
+                ausgabeFeld.append("Du bist dem Monster ausgewichen.\n");
             }
             aktualisiereKampfFrame();
     }

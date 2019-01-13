@@ -1,6 +1,6 @@
 
 /**
- * @Sam Horn & Moritz Wagner 
+ * @Team-Hackintosh 
  * @1.0 
  */
 public class Busch extends Gegenstand

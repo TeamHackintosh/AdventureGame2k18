@@ -1,6 +1,6 @@
 
 /**
- * @author 
+ * @Team-Hackintosh 
  * @version 
  */
 public class Rucksack extends Gegenstand

@@ -6,8 +6,8 @@ import javax.swing.text.DefaultCaret;
 /**
  * Beschreiben Sie hier die Klasse GUI.
  * 
- * @author TeamHackintosh 2018 
- * @version AdventureGUI 2.0
+ * @Team-Hackintosh
+ * @v2.0
  */
 public class GUI extends JFrame implements ActionListener
 {
@@ -148,14 +148,14 @@ public class GUI extends JFrame implements ActionListener
         handPanel = new JPanel();
         handPanel.setLayout(standardLayout);
         handPanel.setBorder(BorderFactory.createTitledBorder("In Hand"));
-        handButtonPanel = new JPanel();
         ausHandButton = new JButton("Wegwerfen");
         ausHandButton.addActionListener(this);
+        ausHandButton.setVisible(false);
         inRButton = new JButton("In den Rucksack verschieben");
         inRButton.addActionListener(this);
-        handButtonPanel.add(inRButton);
-        handButtonPanel.add(ausHandButton);
-        handButtonPanel.setVisible(false);
+        inRButton.setVisible(false);
+        handPanel.add(inRButton);
+        handPanel.add(ausHandButton);
         
         inHandLabel = new JLabel("");
         haltbarkeitLabel = new JLabel("");
@@ -167,7 +167,7 @@ public class GUI extends JFrame implements ActionListener
         waffenPanel.add(schadenLabel);
         handPanel.add(inHandLabel);
         handPanel.add(waffenPanel);
-        handPanel.add(handButtonPanel);
+        
         
         //Rucksack-Panel
         rucksackPanel = new JPanel();
@@ -357,6 +357,17 @@ public class GUI extends JFrame implements ActionListener
       {
           if(kampfButton.getText().equals("Angreifen")){
           Kampf neuerKampf = new Kampf(aktHeld, (Monster) aktLebewesen);
+          if(aktLebewesen.getAktLeben()<=0){
+              aktLebewesen = null;
+              personPanel.setVisible(false);
+            for(int i=0; i<akteure.length; i++){
+                
+                 //Befindet sich das Lebewesen an der gleichen Position wie der Held?
+                  if(akteure[i].getPosX()==aktHeld.getPosX()&&akteure[i].getPosY()==aktHeld.getPosY()){
+                     akteure[i]=null;
+                }
+            }
+          }
         }
         else{
             Mensch aktMensch = (Mensch) aktLebewesen;
@@ -385,6 +396,7 @@ public class GUI extends JFrame implements ActionListener
           if(answer==JOptionPane.YES_OPTION){
               System.exit(0);
         }
+        
       }
     }
     
@@ -494,7 +506,7 @@ public class GUI extends JFrame implements ActionListener
     }
     /** 
        Die Methode ist dafür zuständig alle Lebewesen außer dem Helden zufällig übers Feld zu bewegen.
-       */
+       
     public void bewegeWesen(){
         for(int i=0; i<akteure.length; i++){
             Lebewesen lw = akteure[i];
@@ -508,6 +520,7 @@ public class GUI extends JFrame implements ActionListener
             }
         }
     }
+    */
     //Methoden, die den Helden betreffen
     /** 
        Methode, die den Helden bewegt. Aktualisiert die GUI und leitet evtl. den Kampf ein
@@ -520,30 +533,50 @@ public class GUI extends JFrame implements ActionListener
                 //Ja
                 //Befindet sich auf diesem Feld ein anderes Lebewesen?:
                 //Array mit allen Lebewesen des Spiels wird durchlaufen
+                boolean lebewesenAufFeld = false;
               for(int i=0; i<akteure.length; i++){
                 
                  //Befindet sich das Lebewesen an der gleichen Position wie der Held?
+                try{
                   if(akteure[i].getPosX()==aktX&&akteure[i].getPosY()==aktY){
                       aktLebewesen = akteure[i]; //speichere dieses Lebewesen in aktLebewesen (Instanzvariable) --> nötig um später den Kampf einleiten zu können
                       //Ist es ein Monster?
-                  if(akteure[i].getArt().equals("monster")){
-                        personLabel.setText("Monster");
-                        kampfButton.setText("Angreifen");
-                  }
-                  else if(akteure[i].getArt().equals("mensch")){
-                        personLabel.setText("Mensch");
-                        kampfButton.setText("Ansprechen");
+                      if(akteure[i].getArt().equals("monster")){
+                          personLabel.setText("Monster");
+                          kampfButton.setText("Angreifen");
+                        }
+                        else if(akteure[i].getArt().equals("mensch")){
+                            personLabel.setText("Mensch");
+                            kampfButton.setText("Ansprechen");
                         
+                        }   
+                        lebewesenAufFeld = true;
+                        personPanel.setVisible(true);
+                    }
                 }
-                personPanel.setVisible(true);
-              }
+                catch(NullPointerException e){
+                    //
+                }
+            }
+            if(!lebewesenAufFeld){
+                aktLebewesen = null;
+                personPanel.setVisible(false);
+            }
               //Befindet sich auf diesem Feld ein Gegenstand?
               if(!aktWelt.feldIstLeer(aktHeld.getPosX(), aktHeld.getPosY())){
                   //Ja
                   //Ist dieser Gegenstand eine Tür?
                 if(aktWelt.getFeld(aktX, aktY).getName()=="tuer"){
-                    nimmLabel.setText("tuer");
-                    nimmButton.setText("Öffnen");
+                    Tuer aktFeld=(Tuer) aktWelt.getFeld(aktX, aktY);
+                    if(aktFeld.getOffen()){
+                        nimmLabel.setText("tuer: offen");
+                        nimmButton.setVisible(false);
+                    }
+                    else{
+                        nimmLabel.setText("tuer: geschlossen");
+                        nimmButton.setText("Öffnen");
+                    }
+                    
                 }
                 else{
                     nimmLabel.setText(aktWelt.getFeld(aktHeld.getPosX(), aktHeld.getPosY()).getName());//zeige das in der GUI an
@@ -557,7 +590,6 @@ public class GUI extends JFrame implements ActionListener
                   gegenstandPanel.setVisible(false);
                 }
             }
-        }
             else{
               //Der Held konnte sich nicht bewegen wegen eines Hindernisses, also drucke eine Fehlermeldung
               JOptionPane.showMessageDialog(null, "Du kannst nicht auf dieses Feld gehen, da sich dort ein Hindernis befindet.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
@@ -571,9 +603,7 @@ public class GUI extends JFrame implements ActionListener
        Methode, die den Helden etwas nehmen lässt. Aktualisiert die GUI 
        */
     public void heldNimmt(Gegenstand ausgabe){
-        
 
-        
             if(ausgabe.getName().equals("rucksack")){
                 aktHeld.setRucksack((Rucksack) aktHeld.getInHand());
                 rucksackPanel.setVisible(true);
@@ -582,7 +612,13 @@ public class GUI extends JFrame implements ActionListener
             else{
                 inHandLabel.setText(ausgabe.getName());
                 inHandLabel.setVisible(true);
-                handButtonPanel.setVisible(true);
+                ausHandButton.setVisible(true);
+                if(aktHeld.getRucksack()==null){
+                    inRButton.setVisible(false);
+                }
+                else{
+                    inRButton.setVisible(true);
+                }
                 if(ausgabe.getName().equals("waffe")){
                     Waffe waffe = (Waffe) ausgabe;
                     haltbarkeitLabel.setText("Haltbarkeit: "+waffe.getAktHaltbarkeit()+"/"+waffe.getMaxHaltbarkeit());
@@ -593,21 +629,34 @@ public class GUI extends JFrame implements ActionListener
 
     }
     public void heldWirftWeg(Gegenstand ausgabe){
-            handButtonPanel.setVisible(false);
+            ausHandButton.setVisible(false);
+            inRButton.setVisible(false);
             inHandLabel.setVisible(false);
             waffenPanel.setVisible(false);
             nimmLabel.setText(ausgabe.getName());
+            nimmButton.setText("Aufnehmen");
     }
     public void heldOeffnetTuer(){
-        Schluessel schluessel = (Schluessel) aktHeld.getInHand();
-        Tuer tuer = (Tuer) aktWelt.getFeld(aktHeld.getPosX(), aktHeld.getPosY());
-        boolean erfolgreich = schluessel.oeffne(tuer);
-        if(erfolgreich==true){
-            tuer.setOffen(true);
+        if(!aktHeld.handIstLeer()){
+            if(aktHeld.getInHand().getName()=="schluessel"){
+                Schluessel schluessel = (Schluessel) aktHeld.getInHand();
+                Tuer tuer = (Tuer) aktWelt.getFeld(aktHeld.getPosX(), aktHeld.getPosY());
+                boolean erfolgreich = schluessel.oeffne(tuer);
+                if(erfolgreich==true){
+                    tuer.setOffen(true);
+                    nimmLabel.setText("tuer: offen");
+                    nimmButton.setVisible(false);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Der Schluessel passt nicht.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Du hast keinen Schlüssel in der Hand.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
+            }
         }
         else{
-            JOptionPane.showMessageDialog(null,"Der Schluessel passt nicht.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Du hast keinen Schlüssel in der Hand.","Fehlermeldung",JOptionPane.ERROR_MESSAGE);
         }
-
     }
 }

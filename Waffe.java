@@ -17,11 +17,11 @@ public class Waffe extends Gegenstand
     {
         super("waffe");
     }
-    public Waffe(int pAktHaltbarkeit, int pMaxHaltbarkeit, int pSchaden)
+    public Waffe(int pMaxHaltbarkeit, int pSchaden)
     {
         super("waffe");
-        aktHaltbarkeit = pAktHaltbarkeit;
         maxHaltbarkeit = pMaxHaltbarkeit;
+        aktHaltbarkeit = maxHaltbarkeit;
         schaden = pSchaden;
     }
     public void setMaxHaltbarkeit(int pMaxHaltbarkeit)
